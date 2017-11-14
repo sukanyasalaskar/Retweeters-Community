@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+import com.github.usc.graph.FileContent;
+
+import java.io.IOException;
+
 public class GraphLoader {
     /**
      * Loads graph with data from a file.
@@ -13,29 +17,28 @@ public class GraphLoader {
      */ 
     public static void loadGraph(com.github.usc.graph.Graph g, String filename) {
         Set<Integer> seen = new HashSet<Integer>();
-        Scanner sc;
         try {
-            sc = new Scanner(new File(filename));
-        } catch (Exception e) {
-            e.printStackTrace();
+        	FileContent fc = new FileContent();
+        	String str = fc.getFile(filename);
+        	String[] lines = str.split("\\n");
+        	for (String line : lines) {
+        		String[] l = line.split(" ");
+        		int v1 = Integer.parseInt(l[0]);
+                int v2 = Integer.parseInt(l[1]);
+                if (!seen.contains(v1)) {
+                    g.addVertex(v1);
+                    seen.add(v1);
+                }
+                if (!seen.contains(v2)) {
+                    g.addVertex(v2);
+                    seen.add(v2);
+                }
+                g.addEdge(v1, v2);
+        	}
+        }
+        catch (Exception e) {
+        	e.printStackTrace();
             return;
         }
-        // Iterate over the lines in the file, adding new
-        // vertices as they are found and connecting them with edges.
-        while (sc.hasNextInt()) {
-            int v1 = sc.nextInt();
-            int v2 = sc.nextInt();
-            if (!seen.contains(v1)) {
-                g.addVertex(v1);
-                seen.add(v1);
-            }
-            if (!seen.contains(v2)) {
-                g.addVertex(v2);
-                seen.add(v2);
-            }
-            g.addEdge(v1, v2);
-        }
-        
-        sc.close();
     }
 }

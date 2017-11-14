@@ -11,11 +11,20 @@ import java.util.ArrayList;
 
 import com.github.usc.util.GraphLoader;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+
+import java.io.IOException;
+import org.apache.commons.io.IOUtils;
+
 /**
  * @author Sukanya Salaskar.
  * 
- * For the warm up assignment, you must implement your Graph in a class
- * named CapGraph.  Here is the stub file.
+ * CapGraph class implements Graph interface. This class is responsible
+ * for calculating Strongly Connected Components(SCC) and egonets.
+ * Calculation of SCC's gives retweeters community from the given
+ * Twitter retweet dataset.
  *
  */
 public class CapGraph implements Graph {
@@ -189,8 +198,7 @@ public class CapGraph implements Graph {
 	
 	public static void main(String[] args) {
 		Graph thegraph = new CapGraph();
-		GraphLoader.loadGraph(thegraph, "data/scc/test_2.txt");
-		
+		GraphLoader.loadGraph(thegraph, "/twitter_2000.txt");
 		List<Graph> lst = thegraph.getSCCs();
 		System.out.println(lst.size());
 		for (Graph g : lst) {
@@ -205,16 +213,6 @@ public class CapGraph implements Graph {
 			}
 			System.out.println();
 		}
-		/*Graph subGraph = thegraph.getEgonet(23);
-		HashMap<Integer, HashSet<Integer>> getGraph = subGraph.exportGraph();
-		for (int i : getGraph.keySet()) {
-			HashSet<Integer> set = getGraph.get(i);
-			System.out.print(i+" -> ");
-			for (int id : set) {
-				System.out.print(id+", ");
-			}
-			System.out.println();
-		}*/
 	}
 
 }
